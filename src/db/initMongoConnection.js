@@ -16,10 +16,7 @@ export const initMongoConnection = async () => {
   const mongoURL = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.9rgdj.mongodb.net/${process.env.MONGODB_DB}?retryWrites=true&w=majority`;
 
   try {
-    await mongoose.connect(mongoURL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(mongoURL);
     console.log('Mongo connection successfully established!');
   } catch (error) {
     console.error('Mongo connection failed:', error.message);
