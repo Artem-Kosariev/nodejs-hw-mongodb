@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', ctrlWrapper(getContacts));
 router.get('/:contactId', ctrlWrapper(getContact));
 router.post('/', ctrlWrapper(createContact));
-router.put('/:contactId', ctrlWrapper(updateContact));
+router.patch('/:contactId', ctrlWrapper(updateContact));
 router.delete('/:contactId', ctrlWrapper(deleteContact));
 
 export default router;

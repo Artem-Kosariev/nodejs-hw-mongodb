@@ -1,11 +1,11 @@
+import httpErrors from 'http-errors';
 import {
   getAllContacts,
   getContactById,
   addNewContactService,
-  updateContactService,
   deleteContactService,
+  updateContactService,
 } from '../services/contacts.js';
-import httpErrors from 'http-errors';
 
 export const getContacts = async (req, res, next) => {
   try {
@@ -16,7 +16,7 @@ export const getContacts = async (req, res, next) => {
       data: contacts,
     });
   } catch (err) {
-    next(err);
+    next(httpErrors(500, 'Error fetching contacts'));
   }
 };
 
@@ -57,7 +57,7 @@ export const createContact = async (req, res, next) => {
       data: newContact,
     });
   } catch (err) {
-    next(err);
+    next(httpErrors(500, 'Error creating the contact'));
   }
 };
 
@@ -100,6 +100,6 @@ export const deleteContact = async (req, res, next) => {
 
     res.status(204).send();
   } catch (err) {
-    next(err);
+    next(httpErrors(500, 'Error deleting the contact'));
   }
 };
