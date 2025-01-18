@@ -80,7 +80,7 @@ export const updateContact = async (req, res, next) => {
 
     res.status(200).json({
       status: 200,
-      message: 'Successfully updated the contact!',
+      message: 'Successfully patched a contact!',
       data: updatedContact,
     });
   } catch (err) {
@@ -100,6 +100,6 @@ export const deleteContact = async (req, res, next) => {
 
     res.status(204).send();
   } catch (err) {
-    next(httpErrors(500, 'Error deleting the contact'));
+    next(err.status ? err : httpErrors(500, 'Error deleting the contact'));
   }
 };
