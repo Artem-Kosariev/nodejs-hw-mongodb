@@ -1,22 +1,51 @@
 import httpErrors from 'http-errors';
 import {
-  getAllContacts,
   getContactById,
   addNewContactService,
   deleteContactService,
   updateContactService,
 } from '../services/contacts.js';
 
+import Contact from '../db/models/contact.js';
+
 export const getContacts = async (req, res, next) => {
+  const {
+    page = 1,
+    perPage = 10,
+    sortBy = 'name',
+    sortOrder = 'asc',
+    type,
+    isFavourite,
+  } = req.query;
+
+  const filters = {};
+  if (type) filters.contactType = type;
+  if (isFavourite) filters.isFavourite = isFavourite === 'true';
+
+  const options = {
+    page: parseInt(page),
+    limit: parseInt(perPage),
+    sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 },
+  };
+
   try {
-    const contacts = await getAllContacts();
-    res.status(200).json({
+    const contacts = await Contact.paginate(filters, options);
+    const response = {
       status: 200,
-      message: 'Successfully fetched contacts!',
-      data: contacts,
-    });
-  } catch (err) {
-    next(httpErrors(500, 'Error fetching contacts'));
+      message: 'Successfully found contacts!',
+      data: {
+        data: contacts.docs,
+        page: contacts.page,
+        perPage: contacts.limit,
+        totalItems: contacts.totalDocs,
+        totalPages: contacts.totalPages,
+        hasPreviousPage: contacts.hasPrevPage,
+        hasNextPage: contacts.hasNextPage,
+      },
+    };
+    res.json(response);
+  } catch (error) {
+    next(error);
   }
 };
 

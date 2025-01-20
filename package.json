@@ -23,7 +23,10 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "http-errors": "^2.0.0",
+    "joi": "^17.13.3",
+    "joy": "^0.1.1",
     "mongoose": "^8.9.4",
+    "mongoose-paginate-v2": "^1.9.0",
     "pino": "^9.6.0"
   }
 }
