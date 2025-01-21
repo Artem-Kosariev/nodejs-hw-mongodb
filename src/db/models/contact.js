@@ -1,13 +1,21 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
-const contactSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  phoneNumber: { type: String, required: true },
-  email: { type: String, required: true },
-  isFavourite: { type: Boolean, default: false },
-  contactType: { type: String, required: true },
-});
+const contactSchema = new mongoose.Schema(
+  {
+    name: String,
+    phoneNumber: String,
+    email: String,
+    isFavourite: Boolean,
+    contactType: String,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+  },
+  { timestamps: true },
+);
 
 contactSchema.plugin(mongoosePaginate);
 

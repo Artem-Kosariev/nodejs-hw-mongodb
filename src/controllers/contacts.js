@@ -1,58 +1,51 @@
-import httpErrors from 'http-errors';
 import {
   getContactById,
   addNewContactService,
-  deleteContactService,
   updateContactService,
+  deleteContactService,
 } from '../services/contacts.js';
-
+import httpErrors from 'http-errors';
 import Contact from '../db/models/contact.js';
 
 export const getContacts = async (req, res, next) => {
-  const {
-    page = 1,
-    perPage = 10,
-    sortBy = 'name',
-    sortOrder = 'asc',
-    type,
-    isFavourite,
-  } = req.query;
-
-  const filters = {};
-  if (type) filters.contactType = type;
-  if (isFavourite) filters.isFavourite = isFavourite === 'true';
-
-  const options = {
-    page: parseInt(page),
-    limit: parseInt(perPage),
-    sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 },
-  };
-
   try {
-    const contacts = await Contact.paginate(filters, options);
-    const response = {
+    const {
+      page = 1,
+      perPage = 10,
+      sortBy = 'name',
+      sortOrder = 'asc',
+    } = req.query;
+
+    const contacts = await Contact.paginate(
+      { userId: req.user.userId },
+      {
+        page: parseInt(page),
+        limit: parseInt(perPage),
+        sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 },
+      },
+    );
+
+    res.status(200).json({
       status: 200,
       message: 'Successfully found contacts!',
       data: {
         data: contacts.docs,
-        page: contacts.page,
-        perPage: contacts.limit,
         totalItems: contacts.totalDocs,
         totalPages: contacts.totalPages,
-        hasPreviousPage: contacts.hasPrevPage,
+        page: contacts.page,
+        perPage: contacts.limit,
         hasNextPage: contacts.hasNextPage,
+        hasPrevPage: contacts.hasPrevPage,
       },
-    };
-    res.json(response);
-  } catch (error) {
-    next(error);
+    });
+  } catch (err) {
+    next(err);
   }
 };
 
 export const getContact = async (req, res, next) => {
   try {
-    const { contactId } = req.params;
-    const contact = await getContactById(contactId);
+    const contact = await getContactById(req.params.contactId, req.user.userId);
 
     if (!contact) {
       throw httpErrors(404, 'Contact not found');
@@ -60,7 +53,7 @@ export const getContact = async (req, res, next) => {
 
     res.status(200).json({
       status: 200,
-      message: 'Successfully fetched the contact!',
+      message: 'Successfully found contacts!',
       data: contact,
     });
   } catch (err) {
@@ -78,6 +71,7 @@ export const createContact = async (req, res, next) => {
       email,
       isFavourite,
       contactType,
+      userId: req.user.userId,
     });
 
     res.status(201).json({
@@ -86,22 +80,17 @@ export const createContact = async (req, res, next) => {
       data: newContact,
     });
   } catch (err) {
-    next(httpErrors(500, 'Error creating the contact'));
+    next(err);
   }
 };
 
 export const updateContact = async (req, res, next) => {
   try {
-    const { contactId } = req.params;
-    const { name, phoneNumber, email, isFavourite, contactType } = req.body;
-
-    const updatedContact = await updateContactService(contactId, {
-      name,
-      phoneNumber,
-      email,
-      isFavourite,
-      contactType,
-    });
+    const updatedContact = await updateContactService(
+      req.params.contactId,
+      req.body,
+      req.user.userId,
+    );
 
     if (!updatedContact) {
       throw httpErrors(404, 'Contact not found');
@@ -119,9 +108,10 @@ export const updateContact = async (req, res, next) => {
 
 export const deleteContact = async (req, res, next) => {
   try {
-    const { contactId } = req.params;
-
-    const deletedContact = await deleteContactService(contactId);
+    const deletedContact = await deleteContactService(
+      req.params.contactId,
+      req.user.userId,
+    );
 
     if (!deletedContact) {
       throw httpErrors(404, 'Contact not found');
@@ -129,6 +119,6 @@ export const deleteContact = async (req, res, next) => {
 
     res.status(204).send();
   } catch (err) {
-    next(err.status ? err : httpErrors(500, 'Error deleting the contact'));
+    next(err);
   }
 };
