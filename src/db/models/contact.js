@@ -8,6 +8,7 @@ const contactSchema = new mongoose.Schema(
     email: String,
     isFavourite: Boolean,
     contactType: String,
+    photo: String,
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
