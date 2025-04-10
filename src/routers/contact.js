@@ -10,7 +10,11 @@ import {
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { validateBody } from '../middlewares/validateBody.js';
-import contactSchema from '../validation/contactValidation.js';
+import {
+  contactSchema,
+  contactUpdateSchema,
+} from '../validation/contactValidation.js';
+
 import { authenticate } from '../middlewares/authenticate.js';
 
 const storage = multer.memoryStorage();
@@ -33,11 +37,12 @@ router.post(
   validateBody(contactSchema),
   ctrlWrapper(createContact),
 );
+
 router.patch(
   '/:contactId',
   upload,
   isValidId,
-  validateBody(contactSchema),
+  validateBody(contactUpdateSchema),
   ctrlWrapper(updateContact),
 );
 router.delete('/:contactId', isValidId, ctrlWrapper(deleteContact));

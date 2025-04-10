@@ -1,11 +1,12 @@
-import contactSchema from '../validation/contactValidation.js';
-
-export const validateBody = () => {
+export const validateBody = (schema) => {
   return (req, res, next) => {
-    const { error } = contactSchema.validate(req.body);
+    const { error } = schema.validate(req.body, { abortEarly: false });
+
     if (error) {
-      return res.status(400).json({ message: error.details[0].message });
+      const messages = error.details.map((err) => err.message).join(', ');
+      return res.status(400).json({ message: messages });
     }
+
     next();
   };
 };
