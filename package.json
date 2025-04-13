@@ -4,15 +4,14 @@
   "description": "",
   "type": "module",
   "main": "src/index.js",
-"scripts": {
-  "lint": "eslint src/**/*.js",
-  "start": "node ./src/index.js",
-  "dev": "nodemon src/index.js",
-  "build": "npm run build-docs",
-  "build-docs": "redocly bundle docs/openapi.yaml --ext json -o docs/swagger.json --config redocly.yaml",
-  "preview-docs": "redocly preview-docs --config redocly.yaml"
-},
-
+  "scripts": {
+    "lint": "eslint src/**/*.js",
+    "start": "node ./src/index.js",
+    "dev": "nodemon src/index.js",
+    "build": "npm run build-docs",
+    "build-docs": "redocly bundle docs/openapi.yaml --ext json -o docs/swagger.json --config redocly.yaml",
+    "preview-docs": "redocly preview-docs --config redocly.yaml"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -30,6 +29,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "fs": "^0.0.1-security",
     "http-errors": "^2.0.0",
     "joi": "^17.13.3",
     "joy": "^0.1.1",
