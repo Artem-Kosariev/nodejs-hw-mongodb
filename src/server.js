@@ -1,5 +1,5 @@
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from '../docs/swagger.json' assert { type: 'json' };
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import express from 'express';
@@ -18,6 +18,10 @@ dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// ✅ Загружаем swagger.json вручную (без assert)
+const swaggerPath = path.join(__dirname, '../docs/swagger.json');
+const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf-8'));
 
 const logger = pino({
   level: process.env.LOG_LEVEL || 'info',
