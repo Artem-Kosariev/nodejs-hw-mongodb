@@ -1,0 +1,33 @@
+type: object
+properties:
+  name:
+    type: string
+    example: Jhon Doe
+    minLength: 3
+    maxLength: 20
+  phoneNumber:
+    type: string
+    pattern: '^\+?\d{10,15}$'
+    example: '+380501234567'
+  email:
+    type: string
+    format: email
+    example: Jhon@example.com
+  isFavourite:
+    type: boolean
+    example: true
+  contactType:
+    type: string
+    example: work
+    minLength: 3
+    maxLength: 20
+  photo:
+    type: string
+    format: binary
+    description: Foto (download file)
+required:
+  - name
+  - phoneNumber
+  - contactType
+  - isFavourite
+  - contactType

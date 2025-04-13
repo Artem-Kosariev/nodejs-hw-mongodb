@@ -1,14 +1,23 @@
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../docs/swagger.json' assert { type: 'json' };
+import { fileURLToPath } from 'url';
+import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import pino from 'pino';
+
 import authRouter from './routers/auth.js';
 import contactRouter from './routers/contact.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { initMongoConnection } from './db/initMongoConnection.js';
+
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const logger = pino({
   level: process.env.LOG_LEVEL || 'info',
@@ -29,6 +38,7 @@ export const setupServer = async () => {
   app.use(cookieParser());
   app.use('/auth', authRouter);
   app.use('/contacts', contactRouter);
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   app.use(notFoundHandler);
   app.use(errorHandler);
 

@@ -1,0 +1,67 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Contacts app
+  description: >
+    This is a documentation of contacts app
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+tags:
+  - name: Contacts
+    description: Operations about users.
+  - name: Auth
+    description: Auth operations.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+servers:
+  - url: http://localhost:3000
+  - url: https://nodejs-hw-mongodb-89ov.onrender.com
+
+paths:
+  /contacts:
+    get:
+      security:
+        - bearerAuth: []
+      $ref: '../swagger/paths/contacts/get.yaml'
+    post:
+      security:
+        - bearerAuth: []
+      $ref: '../swagger/paths/contacts/post.yaml'
+  /contacts/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      $ref: '../swagger/paths/contacts/{id}/get.yaml'
+    patch:
+      security:
+        - bearerAuth: []
+      $ref: '../swagger/paths/contacts/{id}/patch.yaml'
+    delete:
+      security:
+        - bearerAuth: []
+      $ref: '../swagger/paths/contacts/{id}/delete.yaml'
+  /auth/register:
+    post:
+      $ref: '../swagger/paths/auth/register/post.yaml'
+  /auth/login:
+    post:
+      $ref: '../swagger/paths/auth/login/post.yaml'
+  /auth/refresh:
+    post:
+      $ref: '../swagger/paths/auth/refresh/post.yaml'
+  /auth/logout:
+    post:
+      $ref: '../swagger/paths/auth/logout/post.yaml'
+  /auth/send-reset-email:
+    post:
+      $ref: '../swagger/paths/auth/send-reset-email/post.yaml'
+  /auth/reset-pwd:
+    post:
+      $ref: '../swagger/paths/auth/reset-pwd/post.yaml'
