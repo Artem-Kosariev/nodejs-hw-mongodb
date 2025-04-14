@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import pino from 'pino';
+import cors from 'cors';
 
 import authRouter from './routers/auth.js';
 import contactRouter from './routers/contact.js';
@@ -36,7 +37,7 @@ export const setupServer = async () => {
     logger.error('MongoDB connection failed:', error.message);
     process.exit(1);
   }
-
+  app.use(cors());
   app.use(express.json());
   app.use(cookieParser());
   app.use('/auth', authRouter);
