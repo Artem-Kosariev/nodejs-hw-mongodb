@@ -54,8 +54,5 @@ responses:
                 email:
                   type: string
                   example: 'example@mail.com'
-                password:
-                  type: string
-                  example: 'password123'
   '409':
     $ref: '../../../components/responses/auth/409.yaml'
