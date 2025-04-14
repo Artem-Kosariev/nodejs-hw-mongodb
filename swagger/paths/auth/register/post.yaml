@@ -13,6 +13,7 @@ requestBody:
         required:
           - name
           - email
+          - password
         properties:
           name:
             description: 'name'
@@ -22,6 +23,10 @@ requestBody:
             description: 'email'
             type: string
             example: 'example@mail.com'
+          password:
+            description: 'password'
+            type: string
+            example: 'password123'
 responses:
   '201':
     description: Successfully registered a user

@@ -535,7 +535,8 @@
                 "type": "object",
                 "required": [
                   "name",
-                  "email"
+                  "email",
+                  "password"
                 ],
                 "properties": {
                   "name": {
@@ -547,6 +548,11 @@
                     "description": "email",
                     "type": "string",
                     "example": "example@mail.com"
+                  },
+                  "password": {
+                    "description": "password",
+                    "type": "string",
+                    "example": "password123"
                   }
                 }
               }
