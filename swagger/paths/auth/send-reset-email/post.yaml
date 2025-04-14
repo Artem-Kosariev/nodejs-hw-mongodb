@@ -7,7 +7,7 @@ security:
   - bearerAuth: []
 requestBody:
   content:
-    application/json:
+    multipart/form-data:
       schema:
         type: object
         required:
@@ -40,7 +40,5 @@ responses:
               example: {}
   '404':
     $ref: '../../../components/responses/auth/404.yaml'
-  '409':
-    $ref: '../../../components/responses/auth/409.yaml'
   '500':
     $ref: '../../../components/responses/auth/500.yaml'

@@ -136,16 +136,20 @@ export const getContacts = async (req, res, next) => {
       perPage = 10,
       sortBy = 'name',
       sortOrder = 'asc',
+      isFavourite,
     } = req.query;
 
-    const contacts = await Contact.paginate(
-      { userId: req.user.userId },
-      {
-        page: Math.max(1, parseInt(page)),
-        limit: Math.max(1, parseInt(perPage)),
-        sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 },
-      },
-    );
+    const filter = {
+      userId: req.user.userId,
+    };
+    if (typeof isFavourite !== 'undefined') {
+      filter.isFavourite = isFavourite === 'true';
+    }
+    const contacts = await Contact.paginate(filter, {
+      page: Math.max(1, parseInt(page)),
+      limit: Math.max(1, parseInt(perPage)),
+      sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 },
+    });
 
     res.status(200).json({
       status: 200,

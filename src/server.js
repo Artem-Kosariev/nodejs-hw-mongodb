@@ -19,7 +19,6 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ✅ Загружаем swagger.json вручную (без assert)
 const swaggerPath = path.join(__dirname, '../docs/swagger.json');
 const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf-8'));
 

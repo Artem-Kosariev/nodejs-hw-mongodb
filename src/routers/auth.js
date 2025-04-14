@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import {
   registerUser,
   loginUser,
@@ -13,12 +14,13 @@ import {
 } from '../validation/userValidation.js';
 
 const router = express.Router();
+const upload = multer().none();
 
-router.post('/register', validateRegistration, registerUser);
-router.post('/login', validateLogin, loginUser);
-router.post('/refresh', refreshSession);
-router.post('/logout', logoutUser);
-router.post('/send-reset-email', sendResetEmail);
-router.post('/reset-pwd', resetPassword);
+router.post('/register', upload, validateRegistration, registerUser);
+router.post('/login', upload, validateLogin, loginUser);
+router.post('/refresh', upload, refreshSession);
+router.post('/logout', upload, logoutUser);
+router.post('/send-reset-email', upload, sendResetEmail);
+router.post('/reset-pwd', upload, resetPassword);
 
 export default router;
